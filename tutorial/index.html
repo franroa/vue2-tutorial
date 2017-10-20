@@ -1,0 +1,126 @@
+<html xmlns:v-bind="http://www.w3.org/1999/xhtml">
+    <head>
+        <style>
+            .like {
+                background: green;
+                color: white;
+                padding: 20px;
+            }
+        </style>
+    </head>
+
+    <body>
+
+        <div id="app">
+            {{ texto }}
+        </div>
+
+        <div id="tercera">
+            {{ texto }}
+        </div>
+
+        <main>
+
+            <hr>
+
+            <!-- COMPONENTES DINAMICOS -->
+            <button @click="elegido = 'articulos'">Cargar articulos</button>
+            <button @click="elegido = 'padre'">Cargar padre</button>
+            <button @click="elegido = 'hijo'">Cargar hijo</button>
+            <component :is="elegido"></component>
+
+            <hr>
+
+            <padre></padre>
+
+            <hr>
+
+            <frutas :objeto="superfruta" inline-template>
+                <div>
+                    <h1>COMPONENTE FRUTAS</h1>
+                    <h3>{{objeto.nombre}}</h3>
+                </div>
+            </frutas>
+
+            <hr />
+
+            <articulos></articulos>
+
+            <hr />
+
+            <h1>{{nombreYapellidos}}</h1>
+
+            <h4>Listado ordenado</h4>
+            <input type="search" v-model="busqueda" placeholder="buscar peli" />
+            <ol>
+                <li @click="marcar(index)" v-bind:class="{like: index == confirmado}" v-for="(fruta, index) in buscarFruta">
+                    {{ fruta.nombre | mayusculas }}
+                </li>
+            </ol>
+            index
+            <hr />
+
+        <!-- Eventos -->
+
+            <h1>Peliculas</h1>
+            <ol>
+                <li v-for="pelicula in peliculas">{{ pelicula }}
+                    <button @click="borrarPeliculas()"> Eliminar pelicula </button>
+                </li>
+            </ol>
+
+
+        <!-- Interpolacion / Imprimir el contenido de una variable del modelo /instancia vue -->
+            <h1> {{ texto }}</h1>
+            <h2 v-text="texto"></h2>
+            <hr />
+
+        <!-- Two way data binding / enlace de datos bidireccional y la reactividad -->
+            <input type="text" v-model="nombre">
+            <p>EL nombre es: {{ nombre }}</p>
+            <hr />
+
+
+        <!-- Directivas conficionales v-if -->
+            Nota: <input type="text" v-model="nota">
+            <strong v-if="nota && nota >= 5 && nota <= 99">Tu nota es mayor que 5!</strong>
+            <span v-else-if="nota && nota == 100">EX!!</span>
+            <span v-else>Has suspendido</span>
+
+        <!-- Directivas de bucles v-for -->
+        <h1>Listado de peliculas (array)</h1>
+            <ol>
+                <li v-for="pelicula in peliculas">{{ pelicula }}</li>
+            </ol>
+
+        <h1>Listado de frutas (array de objetos)</h1>
+            <ul>
+                <li v-for="(fruta, index) in frutas">
+                    {{index}}: {{fruta.nombre}}
+                </li>
+            </ul>
+
+        <h1>Listado de elementos de Objeto (objeto)</h1>
+            <ul>
+                <li v-for="(fruta, key, index) in superfruta">
+                    {{index}}: {{key}} - {{value}}
+                </li>
+            </ul>
+
+            <ol>
+                <li v-for="pelicula in peliculas">{{ pelicula }}</li>
+            </ol>
+
+            <form @submit="crearPelicula()">
+                <input type="text" v-model="peliculaNueva" />
+                <input type="submit" value="Guardar peli" />
+            </form>
+
+            <button @click="crearPelicula()"> Crear Pelicula </button>
+            <button @click="borrarPelicula()"> Borrar Pelicula</button>
+        </main>
+        <script src="https://unpkg.com/vue@2.1.10/dist/vue.js"></script>
+        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+        <script src="js/main.js"></script>
+    </body>
+</html>
